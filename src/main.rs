@@ -2,6 +2,8 @@
 mod macros;
 mod echo;
 mod mail;
+use std::env;
+
 use handlebars::Handlebars;
 
 static mut VERBOSE: bool = false;
@@ -27,15 +29,16 @@ fn do_work() -> Result<(), String> {
     let body = handlebars
         .render("t1", &destination)
         .map_err(|err| format!("Error when rendering template: {}", err))?;
+    let simulate = env::args().count() <= 1;
     mail::send_mail(
-        true,
+        simulate,
         "giggio@giggio.net",
         "A subject",
         &body,
         &mail::Smtp {
-            email: "giggio@giggio.net".to_owned(),
+            email: "user@aaaaaaaaaaaaaaaaaaaaaaaa.com".to_owned(),
             port: 465,
-            server: "mail.google.com".to_owned(),
+            server: "mail.aaaaaaaaaaaaaaaaaaaaaaaa.com".to_owned(),
             credentials: None,
         },
     )?;
