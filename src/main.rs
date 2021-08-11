@@ -1,3 +1,44 @@
+#[macro_use]
+mod macros;
+mod echo;
+mod mail;
+use handlebars::Handlebars;
+
+static mut VERBOSE: bool = false;
+
 fn main() {
-    println!("Hello, world!");
+    match do_work() {
+        Ok(_) => println!("Done!"),
+        Err(err) => println!("Failed. Error:\n{}", err),
+    };
+}
+
+fn do_work() -> Result<(), String> {
+    let mut handlebars = Handlebars::new();
+    handlebars
+        .register_template_string(
+            "t1",
+            "<p>Hello, {{ name }}!</p>\n<p>{{ message }}</p>".to_owned(),
+        )
+        .map_err(|err| format!("Error when parsing template: {}", err))?;
+    let mut destination = std::collections::HashMap::new();
+    destination.insert("name", "Giovanni");
+    destination.insert("message", "Hello there!");
+    let body = handlebars
+        .render("t1", &destination)
+        .map_err(|err| format!("Error when rendering template: {}", err))?;
+    mail::send_mail(
+        true,
+        "giggio@giggio.net",
+        "A subject",
+        &body,
+        &mail::Smtp {
+            email: "giggio@giggio.net".to_owned(),
+            port: 465,
+            server: "mail.google.com".to_owned(),
+            credentials: None,
+        },
+    )?;
+    echo::echo("Hello world")?;
+    Ok(())
 }
