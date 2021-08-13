@@ -3,6 +3,7 @@ mod macros;
 mod echo;
 mod mail;
 use std::env;
+use std::io::BufRead;
 
 use handlebars::Handlebars;
 
@@ -29,7 +30,7 @@ fn do_work() -> Result<(), String> {
     let body = handlebars
         .render("t1", &destination)
         .map_err(|err| format!("Error when rendering template: {}", err))?;
-    let simulate = env::args().count() <= 1;
+    let simulate = !env::args().any(|arg| arg == "sendmail");
     mail::send_mail(
         simulate,
         "giggio@giggio.net",
@@ -43,5 +44,13 @@ fn do_work() -> Result<(), String> {
         },
     )?;
     echo::echo("Hello world")?;
+    let pause = env::args().any(|arg| arg == "pause");
+    if pause {
+        println!("Press enter...");
+        std::io::stdin()
+            .lock()
+            .read_line(&mut String::new())
+            .map_err(|err| format!("Error when reading line: {}", err))?;
+    }
     Ok(())
 }
