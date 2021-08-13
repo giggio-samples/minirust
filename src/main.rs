@@ -35,7 +35,7 @@ fn do_work() -> Result<(), String> {
         "giggio@giggio.net",
         "A subject",
         &body,
-        &mail::Smtp {
+        mail::Smtp {
             email: "user@aaaaaaaaaaaaaaaaaaaaaaaa.com".to_owned(),
             port: 465,
             server: "mail.aaaaaaaaaaaaaaaaaaaaaaaa.com".to_owned(),

@@ -4,7 +4,7 @@ use lettre::message::header::ContentType;
 use lettre::transport::smtp::authentication;
 use lettre::{Message, SmtpTransport, Transport};
 
-fn get_mailer(smtp: &Smtp) -> Result<SmtpTransport, String> {
+fn get_mailer(smtp: Smtp) -> Result<SmtpTransport, String> {
     let mut smtp_transport_builder = SmtpTransport::relay(&smtp.server)
         .map_err(|err| {
             format!(
@@ -13,14 +13,13 @@ fn get_mailer(smtp: &Smtp) -> Result<SmtpTransport, String> {
             )
         })?
         .port(smtp.port);
-    if let Some(credentials) = &smtp.credentials {
-        let username = if let Some(username_from_options) = &credentials.username {
+    if let Some(credentials) = smtp.credentials {
+        let username = if let Some(username_from_options) = credentials.username {
             username_from_options
         } else {
-            &smtp.email
+            smtp.email
         };
-        let creds =
-            authentication::Credentials::new(username.clone(), credentials.password.clone());
+        let creds = authentication::Credentials::new(username, credentials.password);
         smtp_transport_builder = smtp_transport_builder.credentials(creds);
     }
     Ok(smtp_transport_builder.build())
@@ -31,7 +30,7 @@ pub fn send_mail(
     email_address: &str,
     subject: &str,
     message_body: &str,
-    smtp: &Smtp,
+    smtp: Smtp,
 ) -> Result<(), String> {
     if simulate {
         println!("----------------------");
