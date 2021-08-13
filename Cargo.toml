@@ -1,15 +1,16 @@
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-cargo-features = ["named-profiles"]
+cargo-features = ["named-profiles", "strip"]
 
 [package]
 name = "minirust"
 version = "0.1.0"
 edition = "2018"
 
-[profile.release-lto]
+[profile.release-optimized]
 inherits = "release"
 lto = true
+strip = "symbols"
 
 [dependencies]
 handlebars = "4.1.1"
