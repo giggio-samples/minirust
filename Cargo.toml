@@ -1,19 +1,17 @@
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-cargo-features = ["strip"]
-
 [package]
 name = "minirust"
-version = "0.2.0"
+version = "0.3.0"
 edition = "2021"
 
 [profile.release-optimized]
 inherits = "release"
-lto = true
+lto = "fat"
 strip = "symbols"
 
 [dependencies]
-handlebars = "4.1.1"
-lettre = { version = "0.10.0-rc.4", features = ["rustls-tls"] }
-openssl = { version = "0.10.35", features = ["vendored"] }
-which = "4.2.2"
+handlebars = "4.2.2"
+lettre = { version = "0.10.0-rc.5", features = ["rustls-tls"] }
+openssl = { version = "0.10.38", features = ["vendored"] }
+which = "4.2.5"
