@@ -1,4 +1,4 @@
-FROM alpine:3.13 as bins
+FROM alpine:3.16 as bins
 RUN ldd /bin/echo | tr -s '[:blank:]' '\n' | grep '^/' \
     | sort | uniq \
     | xargs -I % sh -c 'mkdir -p $(dirname deps%); cp % deps%;'

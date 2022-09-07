@@ -1,3 +1,3 @@
-FROM ubuntu:21.04
+FROM ubuntu:22.04
 ENTRYPOINT [ "/minirust" ]
 COPY target/output/minirust /minirust
