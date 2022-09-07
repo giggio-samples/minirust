@@ -33,12 +33,11 @@ build_amd64_gnu_dynamic_optimized:
 	cargo build --target $(gnu_target) --profile release-optimized
 
 # the `--target-dir` is necessary until this is fixed: https://github.com/rust-embedded/cross/issues/551
-# the `pwd` is necessary until this is fixed: https://github.com/rust-embedded/cross/issues/581
 build_amd64_musl_static:
-	cross build --target $(musl_target) --release --target-dir `pwd`/cross
+	cross build --target $(musl_target) --release --target-dir cross
 
 build_amd64_musl_static_optimized:
-	cross build --target $(musl_target) --profile release-optimized --target-dir `pwd`/cross
+	cross build --target $(musl_target) --profile release-optimized --target-dir cross
 
 docker_build_ubuntu_amd64_dynamic_debug: build_amd64_gnu_dynamic_debug docker_build_only_ubuntu_amd64_dynamic_debug
 docker_build_only_ubuntu_amd64_dynamic_debug:
@@ -113,7 +112,7 @@ docker_build_only_scratch_amd64_static_optimized:
 	docker run --rm -ti minirust:scratch_optimized
 
 build_armv7_musl_static_optimized:
-	cross build --target $(arm32v7_target) --profile release-optimized --target-dir `pwd`/cross
+	cross build --target $(arm32v7_target) --profile release-optimized --target-dir cross
 
 docker_build_scratch_armv7_static_optimized: build_armv7_musl_static_optimized docker_build_only_scratch_armv7_static_optimized
 docker_build_only_scratch_armv7_static_optimized:
