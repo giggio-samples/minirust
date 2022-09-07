@@ -11,7 +11,7 @@ lto = "fat"
 strip = "symbols"
 
 [dependencies]
-handlebars = "4.2.2"
-lettre = { version = "0.10.0-rc.5", features = ["rustls-tls"] }
-openssl = { version = "0.10.38", features = ["vendored"] }
-which = "4.2.5"
+handlebars = "4.3"
+lettre = { version = "0.10", features = ["rustls-tls"] }
+openssl = { version = "0.10", features = ["vendored"] }
+which = "4.3"
